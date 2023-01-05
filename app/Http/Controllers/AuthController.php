@@ -19,6 +19,20 @@ class AuthController extends Controller
         $provider = $this->providerGet($provider);
 
         $model = $provider->where('email', '=', $req);
+        
+        public function login(Request $request)
+        {
+            $credentials = $request->only('email', 'password');
+
+            if (Auth::attempt($credentials)) {
+                // Authentication passed...
+                return redirect()->intended('dashboard');
+            }
+
+            return redirect()->back()->withInput()->withErrors([
+                'email' => 'The provided credentials are incorrect.'
+            ]);
+        }
 
 
     }
